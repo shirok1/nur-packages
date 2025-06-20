@@ -23,6 +23,11 @@ buildGoModule rec {
   postInstall = ''
     mv $out/bin/qBittorrent-ClientBlocker $out/bin/${pname}
 
+    mkdir -p $out/share/${pname}
+    cp blockList.json $out/share/${pname}/blockList.json
+    cp blockList-Optional.json $out/share/${pname}/blockList-Optional.json
+    cp ipBlockList.txt $out/share/${pname}/ipBlockList.txt
+
     mkdir -p $out/share/doc/${pname}
     cp config.json $out/share/doc/${pname}/config.example.json
   '';

@@ -2,12 +2,11 @@
 
 let
   cfg = config.services.qbittorrent-clientblocker;
-  # defaultConfig = builtins.fromJSON (
-  #   builtins.readFile "${cfg.package}/share/doc/${cfg.package.pname}/config.example.json"
-  # );
   myLib = import ../lib { inherit pkgs; };
   defaultConfig = myLib.fromJSON5File "${cfg.package}/share/doc/${cfg.package.pname}/config.example.json";
-  finalConfig = lib.recursiveUpdate defaultConfig cfg.settings;
+  sharePrefix = "${cfg.package}/share/${cfg.package.pname}";
+  shareConfig = defaultConfig // (lib.genAttrs ["blockListFile" "ipBlockListFile"] (k: (map (x: "${sharePrefix}/${x}")) defaultConfig.${k}));
+  finalConfig = lib.recursiveUpdate shareConfig cfg.settings;
   configFile = pkgs.writeText "qbittorrent-clientblocker.json" (builtins.toJSON finalConfig);
   binPath = "${cfg.package}/bin/${cfg.package.meta.mainProgram}";
 in {
@@ -16,8 +15,7 @@ in {
 
     settings = lib.mkOption {
       type = lib.types.attrs;
-      default = {
-      };
+      default = {};
       description = "JSON settings to write into the configuration file.";
       example = {
         checkUpdate = false;
@@ -30,6 +28,12 @@ in {
         clientUsername = "admin";
         clientPassword = "password";
         useBasicAuth = false;
+        blockListFile = [
+          "blockList.json"
+        ];
+        ipBlockListFile = [
+          "ipBlockList.txt"
+        ];
       };
     };
 
