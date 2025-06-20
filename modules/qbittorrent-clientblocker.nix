@@ -8,14 +8,20 @@ let
   shareConfig = defaultConfig // (lib.genAttrs ["blockListFile" "ipBlockListFile"] (k: (map (x: "${sharePrefix}/${x}")) defaultConfig.${k}));
   finalConfig = lib.recursiveUpdate shareConfig cfg.settings;
   configFile = pkgs.writeText "config.json" (builtins.toJSON finalConfig);
+  # settingsFormat = pkgs.formats.json {};
+  # configFile = pkgs.writeText "config.json" (builtins.toJSON cfg.settings);
   binPath = "${cfg.package}/bin/${cfg.package.meta.mainProgram}";
 in {
   options.services.qbittorrent-clientblocker = {
     enable = lib.mkEnableOption "Enable qBittorrent Client Blocker";
 
     settings = lib.mkOption {
-      type = lib.types.attrs;
-      default = {};
+      type = lib.types.submodule {
+        # freeformType = lib.types.attrs; # or lib.types.attrsOf lib.types.anything
+        # freeformType = settingsFormat.type;
+        freeformType = lib.types.attrsOf lib.types.anything;
+      };
+      default = shareConfig;
       description = "JSON settings to write into the configuration file.";
       example = {
         checkUpdate = false;
