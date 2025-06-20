@@ -7,7 +7,7 @@ let
   sharePrefix = "${cfg.package}/share/${cfg.package.pname}";
   shareConfig = defaultConfig // (lib.genAttrs ["blockListFile" "ipBlockListFile"] (k: (map (x: "${sharePrefix}/${x}")) defaultConfig.${k}));
   finalConfig = lib.recursiveUpdate shareConfig cfg.settings;
-  configFile = pkgs.writeText "qbittorrent-clientblocker.json" (builtins.toJSON finalConfig);
+  configFile = pkgs.writeText "config.json" (builtins.toJSON finalConfig);
   binPath = "${cfg.package}/bin/${cfg.package.meta.mainProgram}";
 in {
   options.services.qbittorrent-clientblocker = {
@@ -51,18 +51,21 @@ in {
       wantedBy = [ "multi-user.target" ];
       after = [ "network.target" ];
 
+      restartIfChanged = true;
+
       serviceConfig = rec {
-        ExecStart = "${binPath} --nochdir --config /etc/qbittorrent-clientblocker.json";
+        # ExecStart = "${binPath} --nochdir --config /etc/qbittorrent-clientblocker.json";
+        ExecStart = "${binPath} --nochdir --config ${configFile}";
         StateDirectory = "qbittorrent-clientblocker";
         WorkingDirectory = "/var/lib/${StateDirectory}";
         Restart = "on-failure";
-        User = "nobody"; # or better: use DynamicUser=yes + CapabilityBoundingSet= if needed
+        # User = "nobody"; # or better: use DynamicUser=yes + CapabilityBoundingSet= if needed
       };
     };
 
     environment = {
       systemPackages = [ cfg.package ];
-      etc."qbittorrent-clientblocker.json".source = configFile;
+      # etc."qbittorrent-clientblocker.json".source = configFile;
     };
   };
 }
