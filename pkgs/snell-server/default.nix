@@ -2,7 +2,7 @@
   lib,
   stdenv,
   fetchzip,
-  autoPatchelfHook,
+  buildFHSEnv,
 }:
 
 let
@@ -33,16 +33,21 @@ let
 
   sha256 = sha256s.${stdenv.system};
 
-in
-stdenv.mkDerivation {
-  inherit pname version;
-
   src = fetchzip {
     inherit url sha256;
     stripRoot = false;
   };
 
-  nativeBuildInputs = [ autoPatchelfHook ];
+in
+buildFHSEnv {
+  inherit pname version;
+
+  targetPkgs =
+    pkgs: with pkgs; [
+      glibc
+    ];
+
+  runScript = "${src}/snell-server";
 
   installPhase = ''
     mkdir -p $out/bin
