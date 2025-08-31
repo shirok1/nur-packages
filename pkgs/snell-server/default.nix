@@ -53,6 +53,7 @@ buildFHSEnv {
     description = "Snell is a lean encrypted proxy protocol developed by Surge team";
     homepage = "https://kb.nssurge.com/surge-knowledge-base/zh/release-notes/snell";
     license = licenses.unfreeRedistributable;
+    sourceProvenance = sourceTypes.binaryNativeCode;
     platforms = builtins.attrNames platformMap;
   };
 }
