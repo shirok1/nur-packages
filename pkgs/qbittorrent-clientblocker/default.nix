@@ -18,7 +18,11 @@ buildGoModule rec {
 
   vendorHash = "sha256-18sSw19EJ3Xo8wFBjLXQBUyyB8FGmJAXVPYE95zh3dk=";
 
-  ldflags = [ "-s" "-w" "-X \"main.programVersion=${version}\"" ];
+  ldflags = [
+    "-s"
+    "-w"
+    "-X \"main.programVersion=${version}\""
+  ];
 
   postInstall = ''
     mv $out/bin/qBittorrent-ClientBlocker $out/bin/${pname}

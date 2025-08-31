@@ -1,17 +1,27 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.services.qbittorrent-clientblocker;
   myLib = import ../lib { inherit pkgs; };
   defaultConfig = myLib.fromJSON5File "${cfg.package}/share/doc/${cfg.package.pname}/config.example.json";
   sharePrefix = "${cfg.package}/share/${cfg.package.pname}";
-  shareConfig = defaultConfig // (lib.genAttrs ["blockListFile" "ipBlockListFile"] (k: (map (x: "${sharePrefix}/${x}")) defaultConfig.${k}));
+  shareConfig =
+    defaultConfig
+    // (lib.genAttrs [ "blockListFile" "ipBlockListFile" ] (
+      k: (map (x: "${sharePrefix}/${x}")) defaultConfig.${k}
+    ));
   finalConfig = lib.recursiveUpdate shareConfig cfg.settings;
   configFile = pkgs.writeText "config.json" (builtins.toJSON finalConfig);
   # settingsFormat = pkgs.formats.json {};
   # configFile = pkgs.writeText "config.json" (builtins.toJSON cfg.settings);
   binPath = "${cfg.package}/bin/${cfg.package.meta.mainProgram}";
-in {
+in
+{
   options.services.qbittorrent-clientblocker = {
     enable = lib.mkEnableOption "Enable qBittorrent Client Blocker";
 
