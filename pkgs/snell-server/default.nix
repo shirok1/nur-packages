@@ -55,5 +55,6 @@ buildFHSEnv {
     license = licenses.unfreeRedistributable;
     sourceProvenance = sourceTypes.binaryNativeCode;
     platforms = builtins.attrNames platformMap;
+    mainProgram = pname;
   };
 }
