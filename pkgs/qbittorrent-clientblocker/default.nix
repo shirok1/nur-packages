@@ -36,7 +36,6 @@ buildGoModule rec {
     description = "一款适用于 qBittorrent/Transmission (Beta)/BitComet (Beta, Partial) 的客户端屏蔽器, 默认屏蔽包括但不限于迅雷等客户端.  A client blocker compatible with qBittorrent/Transmission (Beta)/BitComet (Beta, Partial) which is prohibited to include but not limited to clients such as Xunlei";
     homepage = "https://github.com/Simple-Tracker/qBittorrent-ClientBlocker";
     license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [ ];
     mainProgram = pname;
   };
 }
