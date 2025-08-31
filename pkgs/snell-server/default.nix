@@ -7,7 +7,7 @@
 
 let
   pname = "snell-server";
-  version = "5.0.0b1";
+  version = "5.0.0";
 
   platformMap = {
     "x86_64-linux" = "linux-amd64";
