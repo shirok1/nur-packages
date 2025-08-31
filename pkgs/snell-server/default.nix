@@ -42,11 +42,6 @@ in
 buildFHSEnv {
   inherit pname version;
 
-  targetPkgs =
-    pkgs: with pkgs; [
-      glibc
-    ];
-
   runScript = "${src}/snell-server";
 
   installPhase = ''
