@@ -35,7 +35,6 @@ let
 
   src = fetchzip {
     inherit url sha256;
-    stripRoot = false;
   };
 
 in
