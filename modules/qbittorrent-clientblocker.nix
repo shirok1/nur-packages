@@ -19,7 +19,6 @@ let
   configFile = pkgs.writeText "config.json" (builtins.toJSON finalConfig);
   # settingsFormat = pkgs.formats.json {};
   # configFile = pkgs.writeText "config.json" (builtins.toJSON cfg.settings);
-  binPath = "${cfg.package}/bin/${cfg.package.meta.mainProgram}";
 in
 {
   options.services.qbittorrent-clientblocker = {
@@ -70,8 +69,8 @@ in
       restartIfChanged = true;
 
       serviceConfig = rec {
-        # ExecStart = "${binPath} --nochdir --config /etc/qbittorrent-clientblocker.json";
-        ExecStart = "${binPath} --nochdir --config ${configFile}";
+        # ExecStart = "${lib.getExe cfg.package} --nochdir --config /etc/qbittorrent-clientblocker.json";
+        ExecStart = "${lib.getExe cfg.package} --nochdir --config ${configFile}";
         StateDirectory = "qbittorrent-clientblocker";
         WorkingDirectory = "/var/lib/${StateDirectory}";
         Restart = "on-failure";

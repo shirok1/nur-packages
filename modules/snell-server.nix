@@ -8,7 +8,6 @@
 let
   cfg = config.services.snell-server;
   settingsFormat = pkgs.formats.ini { };
-  binPath = "${cfg.package}/bin/${cfg.package.meta.mainProgram}";
 in
 {
   options.services.snell-server = {
@@ -33,7 +32,7 @@ in
       restartIfChanged = true;
 
       serviceConfig = {
-        ExecStart = "${binPath} -c /etc/snell/snell-server.conf";
+        ExecStart = "${lib.getExe cfg.package} -c /etc/snell/snell-server.conf";
         Restart = "on-failure";
         DynamicUser = true;
         LimitNOFILE = 32768;
