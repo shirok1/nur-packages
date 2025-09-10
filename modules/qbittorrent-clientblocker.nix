@@ -67,7 +67,7 @@ in
         StateDirectory = "qbittorrent-clientblocker";
         WorkingDirectory = "/var/lib/${StateDirectory}";
         Restart = "on-failure";
-        # User = "nobody"; # or better: use DynamicUser=yes + CapabilityBoundingSet= if needed
+        DynamicUser = true;
       };
     };
 
