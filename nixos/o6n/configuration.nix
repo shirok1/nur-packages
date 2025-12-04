@@ -280,7 +280,7 @@
     8080
     13831
   ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedUDPPorts = [ 13831 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
