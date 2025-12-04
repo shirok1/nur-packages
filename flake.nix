@@ -1,8 +1,16 @@
 {
   description = "My personal NUR repository";
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+  #inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    daeuniverse.url = "github:daeuniverse/flake.nix";
+  };
   outputs =
-    { self, nixpkgs }:
+    {
+      self,
+      nixpkgs,
+      daeuniverse,
+    }:
     let
       forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
     in
@@ -16,9 +24,26 @@
       packages = forAllSystems (
         system: nixpkgs.lib.filterAttrs (_: v: nixpkgs.lib.isDerivation v) self.legacyPackages.${system}
       );
-      # nixosModules = {
-      #   qbittorrent-clientblocker = ./modules/qbittorrent-clientblocker.nix;
-      # };
       nixosModules = import ./modules;
+
+      nixosConfigurations.nixo6n = nixpkgs.lib.nixosSystem {
+        modules = [
+          {
+            nixpkgs.overlays = [
+              (final: prev: {
+                shirok1 = self.packages.${final.system};
+              })
+            ];
+          }
+
+          ./configuration.nix
+
+          daeuniverse.nixosModules.dae
+          daeuniverse.nixosModules.daed
+
+          self.nixosModules.qbittorrent-clientblocker
+          self.nixosModules.snell-server
+        ];
+      };
     };
 }
