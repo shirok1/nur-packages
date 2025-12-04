@@ -10,7 +10,7 @@
       self,
       nixpkgs,
       daeuniverse,
-    }:
+    }@inputs:
     let
       forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
     in
@@ -18,7 +18,9 @@
       legacyPackages = forAllSystems (
         system:
         import ./default.nix {
-          pkgs = import nixpkgs { inherit system; };
+          pkgs = import nixpkgs {
+            inherit system;
+          };
         }
       );
       packages = forAllSystems (
@@ -27,11 +29,12 @@
       nixosModules = import ./modules;
 
       nixosConfigurations.nixo6n = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
         modules = [
           {
             nixpkgs.overlays = [
               (final: prev: {
-                shirok1 = self.packages.${final.system};
+                shirok1 = import ./default.nix { pkgs = final; };
               })
             ];
           }
