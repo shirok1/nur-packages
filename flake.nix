@@ -3,12 +3,14 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     daeuniverse.url = "github:daeuniverse/flake.nix";
+    nix-ai-tools.url = "github:numtide/nix-ai-tools";
   };
   outputs =
     {
       self,
       nixpkgs,
       daeuniverse,
+      nix-ai-tools,
     }@inputs:
     let
       forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
@@ -34,14 +36,15 @@
             nixpkgs.overlays = [
               (final: prev: {
                 shirok1 = import ./default.nix { pkgs = final; };
+                nix-ai-tools = inputs.nix-ai-tools.packages.${final.system};
               })
             ];
           }
 
           ./nixos/o6n/configuration.nix
 
-          daeuniverse.nixosModules.dae
-          daeuniverse.nixosModules.daed
+          inputs.daeuniverse.nixosModules.dae
+          inputs.daeuniverse.nixosModules.daed
 
           self.nixosModules.qbittorrent-clientblocker
           self.nixosModules.snell-server
