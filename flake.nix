@@ -39,7 +39,7 @@
             ];
           }
 
-          ./configuration.nix
+          ./nixos/o6n/configuration.nix
 
           daeuniverse.nixosModules.dae
           daeuniverse.nixosModules.daed
