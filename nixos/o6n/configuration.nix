@@ -42,6 +42,15 @@
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
 
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 16 * 1024;
+    }
+  ];
+
+  zramSwap.enable = true;
+
   nixpkgs.overlays = [
     (final: prev: {
       inherit (final.lixPackageSets.stable)
