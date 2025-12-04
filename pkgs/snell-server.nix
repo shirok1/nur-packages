@@ -16,11 +16,9 @@ let
     "armv7l-linux" = "linux-armv7l";
   };
 
-  platform =
-    if builtins.hasAttr stdenv.system platformMap then
-      platformMap.${stdenv.system}
-    else
-      throw "Unsupported platform: ${stdenv.system}";
+  system = stdenv.hostPlatform.system;
+
+  platform = platformMap.${system} or (throw "Unsupported platform: ${system}");
 
   url = "https://dl.nssurge.com/snell/snell-server-v${version}-${platform}.zip";
 
@@ -31,7 +29,7 @@ let
     "armv7l-linux" = "";
   };
 
-  sha256 = sha256s.${stdenv.system};
+  sha256 = sha256s.${system};
 
   src = fetchzip {
     inherit url sha256;
