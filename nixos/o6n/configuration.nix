@@ -276,7 +276,7 @@
   };
 
   services.snell-server = {
-    enable = true;
+    enable = false;
     package = pkgs.shirok1.snell-server;
     settings = {
       snell-server = {
