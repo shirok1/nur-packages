@@ -264,6 +264,12 @@
     #};
   };
 
+  services.jellyfin = {
+    enable = true;
+    openFirewall = true;
+    user = "shiroki";
+  };
+
   services.qbittorrent-clientblocker = {
     enable = true;
     package = pkgs.shirok1.qbittorrent-clientblocker;
