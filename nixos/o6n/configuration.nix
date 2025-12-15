@@ -200,6 +200,11 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
+  services.avahi = {
+    enable = true;
+    publish.enable = true;
+  };
+
   services.samba = {
     enable = true;
     openFirewall = true;
@@ -264,6 +269,53 @@
     #};
   };
 
+  services.home-assistant = {
+    enable = true;
+    openFirewall = true;
+    extraComponents = [
+      # Components required to complete the onboarding
+      "analytics"
+      "google_translate"
+      "met"
+      "radio_browser"
+      "shopping_list"
+      # Recommended for fast zlib compression
+      # https://www.home-assistant.io/integrations/isal
+      "isal"
+
+      "apple_tv"
+      "esphome"
+      "homekit"
+      "homekit_controller"
+      "mqtt"
+      "mqtt_eventstream"
+      "mqtt_json"
+      "mqtt_room"
+      "mqtt_statestream"
+      "ping"
+      "qbittorrent"
+      "sonos"
+      "tasmota"
+      "thread"
+      "upnp"
+      "xiaomi_ble"
+
+      "ffmpeg"
+      "zeroconf"
+    ];
+    config = {
+      # Includes dependencies for a basic setup
+      # https://www.home-assistant.io/integrations/default_config/
+      default_config = { };
+      "automation ui" = "!include automations.yaml";
+      "scene ui" = "!include scenes.yaml";
+      "script ui" = "!include scripts.yaml";
+    };
+    customComponents = with pkgs.home-assistant-custom-components; [
+      xiaomi_home
+    ];
+  };
+
   services.jellyfin = {
     enable = true;
     openFirewall = true;
@@ -297,6 +349,9 @@
   networking.firewall.allowedTCPPorts = [
     8080
     13831
+    21064 # Home Assistant HomeKit Bridge
+    1400 # Home Assistant Sonos
+    1443 # Home Assistant Sonos
   ];
   networking.firewall.allowedUDPPorts = [ 13831 ];
   # Or disable the firewall altogether.
