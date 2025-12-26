@@ -409,6 +409,15 @@
     user = "shiroki";
   };
 
+  services.clickhouse = {
+    enable = true;
+    serverConfig = {
+      listen_host = "::";
+      http_port = 8234;
+      tcp_port = 9000;
+    };
+  };
+
   services.qbittorrent-clientblocker = {
     enable = true;
     package = pkgs.shirok1.qbittorrent-clientblocker;
@@ -437,6 +446,8 @@
     80
     443
     8080
+    8234
+    9000
     13831
     21064 # Home Assistant HomeKit Bridge
     1400 # Home Assistant Sonos
