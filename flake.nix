@@ -42,7 +42,7 @@
         modules = [
           pkgsOverlays
 
-          ./nixos/o6n/configuration.nix
+          ./nixos/machines/o6n/configuration.nix
 
           inputs.daeuniverse.nixosModules.dae
           inputs.daeuniverse.nixosModules.daed
@@ -57,7 +57,7 @@
         modules = [
           pkgsOverlays
 
-          ./nixos/opi5/configuration.nix
+          ./nixos/machines/opi5/configuration.nix
 
           inputs.daeuniverse.nixosModules.dae
           inputs.daeuniverse.nixosModules.daed
