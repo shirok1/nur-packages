@@ -374,9 +374,11 @@
       "ping"
       "qbittorrent"
       "sonos"
+      "switchbot"
       "tasmota"
       "thread"
       "upnp"
+      "waqi"
       "xiaomi_ble"
 
       "ffmpeg"
