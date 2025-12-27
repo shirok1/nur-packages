@@ -135,6 +135,9 @@
       atuin
       eza
       just
+      nix-index
+      ethtool
+      gitui
 
       llm-agents.codex
     ];
