@@ -22,6 +22,21 @@
           })
         ];
       };
+
+      mkSystem = host: nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [
+          pkgsOverlays
+
+          ./machines/${host}/configuration.nix
+
+          inputs.daeuniverse.nixosModules.dae
+          inputs.daeuniverse.nixosModules.daed
+
+          self.nixosModules.qbittorrent-clientblocker
+          self.nixosModules.snell-server
+        ];
+      };
     in
     {
       legacyPackages = forAllSystems (
@@ -37,34 +52,7 @@
       );
       nixosModules = import ./modules;
 
-      nixosConfigurations.nixo6n = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          pkgsOverlays
-
-          ./nixos/o6n/configuration.nix
-
-          inputs.daeuniverse.nixosModules.dae
-          inputs.daeuniverse.nixosModules.daed
-
-          self.nixosModules.qbittorrent-clientblocker
-          self.nixosModules.snell-server
-        ];
-      };
-
-      nixosConfigurations.nixopi5 = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          pkgsOverlays
-
-          ./nixos/opi5/configuration.nix
-
-          inputs.daeuniverse.nixosModules.dae
-          inputs.daeuniverse.nixosModules.daed
-
-          self.nixosModules.qbittorrent-clientblocker
-          self.nixosModules.snell-server
-        ];
-      };
+      nixosConfigurations.nixo6n = mkSystem "o6n";
+      nixosConfigurations.nixopi5 = mkSystem "opi5";
     };
 }
