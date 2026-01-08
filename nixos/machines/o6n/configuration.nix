@@ -112,6 +112,7 @@
       nix-index
       ethtool
       gitui
+      dive
 
       llm-agents.codex
     ];
