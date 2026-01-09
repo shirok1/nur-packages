@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib)
     mkEnableOption
@@ -38,7 +43,8 @@ in
     # 你可以替换为 overlay 提供的 box64；若 nixpkgs 已有 pkgs.box64 也可直接用默认。
     package = mkOption {
       type = types.package;
-      default = pkgs.box64 or (throw "pkgs.box64 is not available; set boot.binfmt.box64.package explicitly.");
+      default =
+        pkgs.box64 or (throw "pkgs.box64 is not available; set boot.binfmt.box64.package explicitly.");
       description = "The box64 package providing bin/box64.";
     };
 
