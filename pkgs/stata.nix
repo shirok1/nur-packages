@@ -59,7 +59,7 @@ stdenv.mkDerivation {
     tar xzf unix/linux64/ado.taz --directory=$out
     tar xzf unix/linux64/docs.taz --directory=$out
 
-    if [ ! -f "isstata.${isstataSuffix}" ]; then
+    if [ ! -f "$out/isstata.${isstataSuffix}" ]; then
       echo "ERROR: expected marker file isstata.${isstataSuffix} not found"
       echo "  (derived from majorVersion=${majorVersion})"
       echo "  available isstata.* files:"
