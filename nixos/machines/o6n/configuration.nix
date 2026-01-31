@@ -29,7 +29,40 @@
   networking.hostName = "nixo6n"; # Define your hostname.
 
   # Configure network connections interactively with nmcli or nmtui.
-  networking.networkmanager.enable = true;
+  # networking.networkmanager.enable = true;
+  networking.useDHCP = false;
+  systemd.network.enable = true;
+  systemd.network = {
+    netdevs = {
+      "10-bond0" = {
+        netdevConfig = {
+          Kind = "bond";
+          Name = "bond0";
+          MACAddress = "00:48:54:20:b7:b2";
+        };
+        bondConfig = {
+          # Mode = "active-backup";
+          # Mode = "802.3ad";
+          Mode = "balance-xor";
+          TransmitHashPolicy = "layer3+4";
+        };
+      };
+    };
+    networks = {
+      "30-r8169" = {
+        matchConfig.Driver = "r8169";
+        networkConfig.Bond = "bond0";
+      };
+      "40-bond0" = {
+        matchConfig.Name = "bond0";
+        networkConfig = {
+          DHCP = "ipv4";
+          IPv6AcceptRA = true;
+        };
+        linkConfig.RequiredForOnline = "routable";
+      };
+    };
+  };
 
   # Set your time zone.
   time.timeZone = "Asia/Hong_Kong";
