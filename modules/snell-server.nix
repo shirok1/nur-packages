@@ -8,13 +8,15 @@
 let
   cfg = config.services.snell-server;
   settingsFormat = pkgs.formats.ini { };
+  iniAtom = settingsFormat.lib.types.atom;
+  sectionType = lib.types.attrsOf iniAtom;
 in
 {
   options.services.snell-server = {
     enable = lib.mkEnableOption "Enable Snell Proxy Service";
 
     settings = lib.mkOption {
-      type = lib.types.nullOr settingsFormat.type;
+      type = lib.types.nullOr sectionType;
       default = null;
       description = "INI settings to write into the configuration file.";
       example = { };
@@ -56,7 +58,9 @@ in
           if cfg.settingsFile != null then
             cfg.settingsFile
           else
-            settingsFormat.generate "snell-server.conf" cfg.settings
+            settingsFormat.generate "snell-server.conf" {
+              snell-server = cfg.settings;
+            }
         }";
         Restart = "on-failure";
         DynamicUser = true;
