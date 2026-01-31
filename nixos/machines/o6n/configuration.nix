@@ -91,6 +91,12 @@
   nixpkgs.config.allowUnfree = true;
 
   hardware.bluetooth.enable = true;
+  hardware.bluetooth.settings = {
+    General = {
+      Experimental = true;
+      KernelExperimental = true;
+    };
+  };
 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
@@ -368,6 +374,7 @@
       "isal"
 
       "apple_tv"
+      "bthome"
       "esphome"
       "homekit"
       "homekit_controller"
